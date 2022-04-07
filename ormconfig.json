@@ -1,0 +1,17 @@
+{
+  "type": "postgres",
+  "port": 5432,
+  "host": "localhost",
+  "username": "docker",
+  "password": "ignite",
+  "database": "carentdb",
+  "migrations": [
+    "./src/database/migrations/*.ts"
+  ],
+  "entities": [
+    "./src/modules/cars/entities/*.ts"
+  ],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
+}

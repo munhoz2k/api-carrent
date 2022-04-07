@@ -1,5 +1,6 @@
 import { parse } from "csv-parse";
 import fs from "fs";
+import { inject, injectable } from "tsyringe";
 
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
 
@@ -8,15 +9,19 @@ interface IImportCategory {
   description: string;
 }
 
+@injectable()
 export class ImportCategoryUseCase {
-  constructor(private categoriesRepository: ICategoriesRepository) {}
+  constructor(
+    @inject("CategoriesRepository")
+    private categoriesRepository: ICategoriesRepository
+  ) {}
 
   loadCategories(file: Express.Multer.File): Promise<IImportCategory[]> {
     return new Promise((resolve, reject) => {
       const stream = fs.createReadStream(file.path);
       const categories: IImportCategory[] = [];
 
-      const parseFile = parse({});
+      const parseFile = parse();
 
       stream.pipe(parseFile);
 
@@ -29,9 +34,11 @@ export class ImportCategoryUseCase {
           });
         })
         .on("end", () => {
+          fs.promises.unlink(file.path);
           resolve(categories);
         })
         .on("error", (err) => {
+          fs.promises.unlink(file.path);
           reject(err);
         });
     });

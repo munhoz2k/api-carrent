@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  database-ignite:
+    image: postgres
+    container_name: database-ignite
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=ignite
+      - POSTGRES_DB=carentdb
+    volumes:
+      - pgdata:/data/postgres
+  app:
+    build: .
+    container_name: carent
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/usr/app
+    links:
+      - database-ignite
+    depends_on:
+      - database-ignite
+volumes:
+  pgdata:
+    driver: local

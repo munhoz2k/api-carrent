@@ -17,6 +17,7 @@ export class SpecificationsRepository implements ISpecificationsRepository {
     const specification = this.repository.create({
       description,
       name,
+      created_at: new Date(),
     });
 
     await this.repository.save(specification);
@@ -28,5 +29,10 @@ export class SpecificationsRepository implements ISpecificationsRepository {
     });
 
     return specification;
+  }
+
+  async findByIds(ids: string[]): Promise<Specification[]> {
+    const specifications = await this.repository.findByIds(ids);
+    return specifications;
   }
 }

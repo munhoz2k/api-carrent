@@ -7,6 +7,7 @@ export class CarsRepositoryInMemory implements ICarsRepository {
   cars: Car[] = [];
 
   async create({
+    id,
     name,
     description,
     daily_rate,
@@ -18,6 +19,7 @@ export class CarsRepositoryInMemory implements ICarsRepository {
     const car = new Car();
 
     Object.assign(car, {
+      id,
       name,
       description,
       daily_rate,
@@ -52,5 +54,10 @@ export class CarsRepositoryInMemory implements ICarsRepository {
       return null;
     });
     return cars;
+  }
+
+  async findById(car_id: string): Promise<Car> {
+    const car = this.cars.find((car) => car.id === car_id);
+    return car;
   }
 }

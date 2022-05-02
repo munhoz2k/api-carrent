@@ -9,10 +9,10 @@ interface IRequest {
   name?: string;
 }
 
-// @injectable()
-export class ListCarsUseCase {
+@injectable()
+export class ListAvailableCarsUseCase {
   constructor(
-    // @inject("")
+    @inject("CarsRepository")
     private carsRepository: ICarsRepository
   ) {}
   async execute({ category_id, brand, name }: IRequest): Promise<Car[]> {

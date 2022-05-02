@@ -1,14 +1,16 @@
 import { CarsRepositoryInMemory } from "@modules/cars/repositories/in-memory/CarsRepositoryInMemory";
 
-import { ListCarsUseCase } from "./ListCarsUseCase";
+import { ListAvailableCarsUseCase } from "./ListAvailableCarsUseCase";
 
 let carsRepositoryInMemory: CarsRepositoryInMemory;
-let listCarsUseCase: ListCarsUseCase;
+let listAvailableCarsUseCase: ListAvailableCarsUseCase;
 
 describe("List Cars", () => {
   beforeEach(() => {
     carsRepositoryInMemory = new CarsRepositoryInMemory();
-    listCarsUseCase = new ListCarsUseCase(carsRepositoryInMemory);
+    listAvailableCarsUseCase = new ListAvailableCarsUseCase(
+      carsRepositoryInMemory
+    );
   });
 
   it("should be able to list all avaible cars", async () => {
@@ -35,7 +37,7 @@ describe("List Cars", () => {
     await carsRepositoryInMemory.create(car1);
     await carsRepositoryInMemory.create(car2);
 
-    let cars = await listCarsUseCase.execute({});
+    let cars = await listAvailableCarsUseCase.execute({});
 
     cars = cars.map((car) => {
       // eslint-disable-next-line no-param-reassign
@@ -51,6 +53,35 @@ describe("List Cars", () => {
     expect(cars).toEqual([car1, car2]);
   });
 
+  it("should be able to list all avaible cars by brand", async () => {
+    const car3 = {
+      name: "car3",
+      description: "car desc 3",
+      daily_rate: 100.0,
+      license_plate: "GHI-9101",
+      fine_amount: 100,
+      brand: "brand3",
+      category_id: "945ac7cc-9277-48ba-b2ec-3b08157c14d4",
+    };
+
+    await carsRepositoryInMemory.create(car3);
+
+    let cars = await listAvailableCarsUseCase.execute({ brand: car3.brand });
+
+    cars = cars.map((car) => {
+      // eslint-disable-next-line no-param-reassign
+      delete car.id;
+      // eslint-disable-next-line no-param-reassign
+      delete car.available;
+
+      return car;
+    });
+
+    console.log(cars);
+
+    expect(cars).toEqual([car3]);
+  });
+
   it("should be able to list all avaible cars by name", async () => {
     const car3 = {
       name: "car3",
@@ -64,7 +95,38 @@ describe("List Cars", () => {
 
     await carsRepositoryInMemory.create(car3);
 
-    let cars = await listCarsUseCase.execute({ brand: car3.brand });
+    let cars = await listAvailableCarsUseCase.execute({ name: car3.name });
+
+    cars = cars.map((car) => {
+      // eslint-disable-next-line no-param-reassign
+      delete car.id;
+      // eslint-disable-next-line no-param-reassign
+      delete car.available;
+
+      return car;
+    });
+
+    console.log(cars);
+
+    expect(cars).toEqual([car3]);
+  });
+
+  it("should be able to list all avaible cars by category id", async () => {
+    const car3 = {
+      name: "car3",
+      description: "car desc 3",
+      daily_rate: 100.0,
+      license_plate: "GHI-9101",
+      fine_amount: 100,
+      brand: "brand3",
+      category_id: "945ac7cc-9277-48ba-b2ec-3b08157c14d4",
+    };
+
+    await carsRepositoryInMemory.create(car3);
+
+    let cars = await listAvailableCarsUseCase.execute({
+      category_id: car3.category_id,
+    });
 
     cars = cars.map((car) => {
       // eslint-disable-next-line no-param-reassign

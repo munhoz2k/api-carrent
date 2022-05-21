@@ -34,16 +34,16 @@ describe("Create Category", () => {
     const categoName = "Category Testing";
     const categoDescription = "Category description Test";
 
-    expect(async () => {
-      await createCategoryUseCase.execute({
-        name: categoName,
-        description: categoDescription,
-      });
+    await createCategoryUseCase.execute({
+      name: categoName,
+      description: categoDescription,
+    });
 
-      await createCategoryUseCase.execute({
+    await expect(
+      createCategoryUseCase.execute({
         name: categoName,
         description: categoDescription,
-      });
-    }).rejects.toBeInstanceOf(AppError);
+      })
+    ).rejects.toEqual(new AppError("Category already exists!"));
   });
 });

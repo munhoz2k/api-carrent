@@ -48,8 +48,6 @@ describe("List Cars", () => {
       return car;
     });
 
-    console.log(cars);
-
     expect(cars).toEqual([car1, car2]);
   });
 
@@ -77,8 +75,6 @@ describe("List Cars", () => {
       return car;
     });
 
-    console.log(cars);
-
     expect(cars).toEqual([car3]);
   });
 
@@ -105,8 +101,6 @@ describe("List Cars", () => {
 
       return car;
     });
-
-    console.log(cars);
 
     expect(cars).toEqual([car3]);
   });
@@ -136,8 +130,6 @@ describe("List Cars", () => {
 
       return car;
     });
-
-    console.log(cars);
 
     expect(cars).toEqual([car3]);
   });

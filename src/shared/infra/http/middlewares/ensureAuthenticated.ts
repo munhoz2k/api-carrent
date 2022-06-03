@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { verify, JsonWebTokenError } from "jsonwebtoken";
 
+import auth from "@config/auth";
 import { UsersRepository } from "@modules/accounts/infra/typeorm/repositories/UsersRepository";
+import { UsersTokensRepository } from "@modules/accounts/infra/typeorm/repositories/UsersTokensRepository";
 import { AppError } from "@shared/errors/AppError";
 
 interface IPayload {
@@ -14,6 +16,7 @@ export async function ensureAuthenticated(
   next: NextFunction
 ) {
   const authHeader = req.headers.authorization;
+  const usersRepository = new UsersRepository();
 
   if (!authHeader) {
     throw new AppError("Token is missing", 401);
@@ -22,12 +25,7 @@ export async function ensureAuthenticated(
   const [, token] = authHeader.split(" ");
 
   try {
-    const { sub: user_id } = verify(
-      token,
-      "6b25cff77f9bad60a73fa81daa7d06ae"
-    ) as IPayload;
-
-    const usersRepository = new UsersRepository();
+    const { sub: user_id } = verify(token, auth.secret) as IPayload;
 
     const user = await usersRepository.findById(user_id);
 
@@ -36,13 +34,13 @@ export async function ensureAuthenticated(
     }
 
     req.user = {
-      id: user.id,
+      id: user_id,
     };
 
     next();
   } catch (error) {
     if (error instanceof JsonWebTokenError) {
-      throw new AppError("User does not exists!", 401);
+      throw new AppError("Invalid JWT token!", 401);
     }
 
     throw new AppError(error.message, 500);

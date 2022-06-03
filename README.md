@@ -6,20 +6,24 @@
 
 ## O Projeto utiliza:
 <br>
-🇪#X --Express--
+🇪❌ --Express--
 <br>
-🐋  --Dockers--
+🐋   --Dockers--
 <br>
-🐘 --Postgress--
+🐘   --Postgress--
 <br>
-💾 --TypeORM--
+💾   --TypeORM--
 <br>
---AWS S3--
+☁️☁️   --AWS S3--
 <br>
---Swagger Docs--
+📜   --Swagger Docs--
 <br>
---Jest && SuperTest--
-📩 --NodedMailer--
-💉 --TSyringe--
+🃏   --Jest && SuperTest--
+<br>
+📩   --NodedMailer--
+<br>
+💉   --TSyringe--
+<br>
+<br>
 
 > Projeto ainda está em desenvolvimento

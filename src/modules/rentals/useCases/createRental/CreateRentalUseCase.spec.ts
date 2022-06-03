@@ -38,6 +38,7 @@ describe("Create Rental", () => {
     };
 
     await carsRepositoryInMemory.create(createCar);
+
     const car = await carsRepositoryInMemory.findByPlate(
       createCar.license_plate
     );
@@ -53,47 +54,16 @@ describe("Create Rental", () => {
   });
 
   it("should not be able to create a new rental if there is another open to the user", async () => {
-    const createCar = {
-      name: "Test",
-      description: "Car test",
-      daily_rate: 100,
-      license_plate: "test-1234",
-      fine_amount: 60,
-      category_id: "1234",
-      brand: "Volvo T4",
-    };
-
-    const createCar1 = {
-      name: "Test 1",
-      description: "Car test 1",
-      daily_rate: 100,
-      license_plate: "4321-test",
-      fine_amount: 60,
-      category_id: "1234",
-      brand: "Volvo T4",
-    };
-
-    await carsRepositoryInMemory.create(createCar);
-    await carsRepositoryInMemory.create(createCar1);
-
-    const car = await carsRepositoryInMemory.findByPlate(
-      createCar.license_plate
-    );
-
-    const car1 = await carsRepositoryInMemory.findByPlate(
-      createCar1.license_plate
-    );
-
-    await createRentalUseCase.execute({
+    await rentalsRepositoryInMemory.create({
       user_id: "12345",
-      car_id: car.id,
+      car_id: "123123123",
       expected_return_date: dayAdd24Hours,
     });
 
     await expect(
       createRentalUseCase.execute({
         user_id: "12345",
-        car_id: car1.id,
+        car_id: "321321321",
         expected_return_date: dayAdd24Hours,
       })
     ).rejects.toEqual(
@@ -102,31 +72,16 @@ describe("Create Rental", () => {
   });
 
   it("should not be able to create a new rental if there is another open rental to the same car", async () => {
-    const createCar = {
-      name: "Test",
-      description: "Car test",
-      daily_rate: 100,
-      license_plate: "test-12345",
-      fine_amount: 60,
-      category_id: "1234",
-      brand: "Volvo T4",
-    };
-
-    await carsRepositoryInMemory.create(createCar);
-    const car = await carsRepositoryInMemory.findByPlate(
-      createCar.license_plate
-    );
-
-    await createRentalUseCase.execute({
+    await rentalsRepositoryInMemory.create({
       user_id: "12345",
-      car_id: car.id,
+      car_id: "543543543",
       expected_return_date: dayAdd24Hours,
     });
 
     await expect(
       createRentalUseCase.execute({
         user_id: "54321",
-        car_id: car.id,
+        car_id: "543543543",
         expected_return_date: dayAdd24Hours,
       })
     ).rejects.toEqual(new AppError("Car is not available for use!"));

@@ -32,8 +32,6 @@ export class CreateRentalUseCase {
       car_id
     );
 
-    console.log(carAvailable);
-
     if (carAvailable) {
       throw new AppError("Car is not available for use!", 400);
     }

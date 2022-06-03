@@ -2,7 +2,10 @@ import { compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 
+import auth from "@config/auth";
 import { IUsersRepository } from "@modules/accounts/repositories/IUsersRepository";
+import { IUsersTokensRepository } from "@modules/accounts/repositories/IUsersTokensRepository";
+import { IDateProvider } from "@shared/container/providers/DateProvider/IDateProvider";
 import { AppError } from "@shared/errors/AppError";
 
 interface IRequest {
@@ -11,19 +14,25 @@ interface IRequest {
 }
 
 interface IResponse {
+  token: string;
+
+  refreshToken: string;
+
   user: {
     name: string;
     email: string;
   };
-
-  token: string;
 }
 
 @injectable()
 export class AuthenticateUserUseCase {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("UsersTokensRepository")
+    private usersTokensRepository: IUsersTokensRepository,
+    @inject("DayjsDateProvider")
+    private dayjsDateProvider: IDateProvider
   ) {}
 
   async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -39,13 +48,29 @@ export class AuthenticateUserUseCase {
       throw new AppError("Email or password incorrect!", 400);
     }
 
-    const token = sign({}, "6b25cff77f9bad60a73fa81daa7d06ae", {
+    const token = sign({}, auth.secret, {
       subject: user.id,
-      expiresIn: "1d",
+      expiresIn: auth.expires_in_token,
+    });
+
+    const refreshToken = sign({ email }, auth.secretRefresh, {
+      subject: user.id,
+      expiresIn: auth.expires_in_refresh_token,
+    });
+
+    const refreshTokenExpiresDate = this.dayjsDateProvider.addDays(
+      auth.refresh_token_days
+    );
+
+    await this.usersTokensRepository.create({
+      user_id: user.id,
+      refresh_token: refreshToken,
+      expires_date: refreshTokenExpiresDate,
     });
 
     const tokenReturn: IResponse = {
       token,
+      refreshToken,
       user: {
         name: user.name,
         email: user.email,

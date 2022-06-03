@@ -32,7 +32,7 @@ describe("", () => {
       password: "admin",
     });
 
-    const { token } = responseToken.body;
+    const { refreshToken } = responseToken.body;
 
     await request(app)
       .post("/categories")
@@ -41,7 +41,7 @@ describe("", () => {
         description: "Category Created from Supertest Script",
       })
       .set({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${refreshToken}`,
       });
 
     await request(app)
@@ -51,7 +51,7 @@ describe("", () => {
         description: "Category Created from Supertest Script 2",
       })
       .set({
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${refreshToken}`,
       });
 
     const response = await request(app).get("/categories");

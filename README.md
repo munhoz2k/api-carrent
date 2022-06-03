@@ -25,4 +25,5 @@ ___
 <br>
 <br>
 ___
-> Projeto ainda está em desenvolvimento <
+> Projeto ainda está em desenvolvimento
+> Foi desenvolvido em finalização do modulo back-end com node.js da Rocketseat

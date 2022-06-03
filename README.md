@@ -5,23 +5,23 @@
 > CarRent também tem um sistema de upload, onde o usuário consegue armazenar seu avatar e também as imagens dos carros
 
 ## O Projeto utiliza:
-🇪❌ --Express--
+🇪 --Express--
 <br>
-🐋   --Dockers--
+🐋 --Dockers--
 <br>
-🐘   --Postgress--
+🐘 --Postgress--
 <br>
-💾   --TypeORM--
+💾 --TypeORM--
 <br>
-☁️    --AWS S3--
+☁️  --AWS S3--
 <br>
-📜   --Swagger Docs--
+📜 --Swagger Docs--
 <br>
-🃏   --Jest && SuperTest--
+🃏 --Jest && SuperTest--
 <br>
-📩   --NodedMailer--
+📩 --NodedMailer--
 <br>
-💉   --TSyringe--
+💉 --TSyringe--
 <br>
 <br>
 

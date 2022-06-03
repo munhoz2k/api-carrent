@@ -25,4 +25,4 @@
 <br>
 <br>
 
-> Projeto ainda está em desenvolvimento
+> Projeto ainda está em desenvolvimento <

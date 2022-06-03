@@ -38,7 +38,6 @@ export class User {
       default:
         return null;
     }
-    return null;
   }
 
   constructor() {

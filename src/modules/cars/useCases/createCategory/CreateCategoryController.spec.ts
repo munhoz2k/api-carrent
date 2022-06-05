@@ -17,7 +17,7 @@ describe("Create Category Controller", () => {
 
     await connection.query(
       `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license, avatar)
-    values('${id}', 'admin', 'admin@carent.com', '${password}', true, 'now()', 'XXXXXX', 'a')`
+    values('${id}', 'admin', 'admin@carrent.com', '${password}', true, 'now()', 'XXXXXX', 'a')`
     );
   });
 
@@ -28,11 +28,11 @@ describe("Create Category Controller", () => {
 
   it("should be able to create a new category", async () => {
     const responseToken = await request(app).post("/sessions").send({
-      email: "admin@carent.com",
+      email: "admin@carrent.com",
       password: "admin",
     });
 
-    const { refreshToken } = responseToken.body;
+    const { token } = responseToken.body;
 
     const response = await request(app)
       .post("/categories")
@@ -41,7 +41,7 @@ describe("Create Category Controller", () => {
         description: "Category Created from Supertest Script",
       })
       .set({
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${token}`,
       });
 
     expect(response.status).toBe(201);
@@ -49,11 +49,11 @@ describe("Create Category Controller", () => {
 
   it("should not be able to create a new category if name already exists", async () => {
     const responseToken = await request(app).post("/sessions").send({
-      email: "admin@carent.com",
+      email: "admin@carrent.com",
       password: "admin",
     });
 
-    const { refreshToken } = responseToken.body;
+    const { token } = responseToken.body;
 
     const response = await request(app)
       .post("/categories")
@@ -62,7 +62,7 @@ describe("Create Category Controller", () => {
         description: "Category Created from Supertest Script",
       })
       .set({
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${token}`,
       });
 
     expect(response.status).toBe(400);

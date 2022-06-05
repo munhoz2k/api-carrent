@@ -17,7 +17,7 @@ describe("", () => {
 
     await connection.query(
       `INSERT INTO USERS(id, name, email, password, "isAdmin", created_at, driver_license, avatar)
-    values('${id}', 'admin', 'admin@carent.com', '${password}', true, 'now()', 'XXXXXX', 'a')`
+    values('${id}', 'admin', 'admin@carrent.com', '${password}', true, 'now()', 'XXXXXX', 'a')`
     );
   });
 
@@ -28,11 +28,11 @@ describe("", () => {
 
   it("should be able to list all categories", async () => {
     const responseToken = await request(app).post("/sessions").send({
-      email: "admin@carent.com",
+      email: "admin@carrent.com",
       password: "admin",
     });
 
-    const { refreshToken } = responseToken.body;
+    const { token } = responseToken.body;
 
     await request(app)
       .post("/categories")
@@ -41,7 +41,7 @@ describe("", () => {
         description: "Category Created from Supertest Script",
       })
       .set({
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${token}`,
       });
 
     await request(app)
@@ -51,7 +51,7 @@ describe("", () => {
         description: "Category Created from Supertest Script 2",
       })
       .set({
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${token}`,
       });
 
     const response = await request(app).get("/categories");

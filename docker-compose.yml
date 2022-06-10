@@ -9,7 +9,7 @@ services:
       - 65432:5432
     environment:
       - POSTGRES_USER=docker
-      - POSTGRES_PASSWORD=07075627
+      - POSTGRES_PASSWORD=ignite
       - POSTGRES_DB=carrentdb
     volumes:
       - pgdata:/data/postgres

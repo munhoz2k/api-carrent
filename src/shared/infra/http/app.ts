@@ -1,3 +1,4 @@
+import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import swaggerUi from "swagger-ui-express";
 
@@ -15,6 +16,7 @@ import swaggerFile from "../../../swagger.json";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 createConnection();

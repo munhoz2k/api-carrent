@@ -43,4 +43,4 @@ jobs:
             cd ~/application/api-carrent
             yarn
             yarn typeorm migration:run
-            pm2 restart carrent_api
+            pm2 restart api-carrent

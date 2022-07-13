@@ -19,7 +19,7 @@ ___
 <br>
 🃏 --Jest && SuperTest--
 <br>
-📩 --NodedMailer--
+📩 --NodeMailer--
 <br>
 💉 --TSyringe--
 <br>
